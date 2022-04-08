@@ -1,0 +1,28 @@
+﻿@using WebStore.Domain.Entities.Identity
+<div class="shop-menu pull-right">
+    <ul class="nav navbar-nav">
+        @if (User.IsInRole(Role.Adinistrators))
+        {
+            <li>
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index">
+                    <i class="fa fa-keyboard-o"></i> Админка
+                </a>
+            </li>
+        }
+        <li>
+            <a asp-controller="UserProfile" asp-action="Index">
+                <i class="fa fa-user"></i> @User.Identity.Name
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Cart" asp-action="Index">
+                <i class="fa fa-shopping-cart"></i> Корзина
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Account" asp-action="Logout">
+                <i class="fa fa-lock"></i> Выход
+            </a>
+        </li>
+    </ul>
+</div>

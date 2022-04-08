@@ -1,0 +1,84 @@
+﻿@using WebStore.Domain.Entities.Identity
+@model IEnumerable<WebStore.Domain.Entities.Employee>
+
+<div class="container">
+    @if (User.IsInRole(Role.Adinistrators))
+    {
+        <p>
+            <a asp-action="Edit" class="btn btn-default">Создать</a>|
+            <a asp-action="Create" class="btn btn-default">Создать2</a>
+        </p>
+
+        <hr/>
+    }
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                @if (User.IsInRole(Role.Adinistrators))
+                {
+                    <th></th>
+                }
+                <th>Id</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Возраст</th>
+                <th>Ф.И.О.</th>
+                @if (User.IsInRole(Role.Adinistrators))
+                {
+                    <th></th>
+                }
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    @if (User.IsInRole(Role.Adinistrators))
+                    {
+                        <td>
+                            <form asp-action="DeleteConfirmed" asp-route-id="@employee.Id">
+                                <input type="submit" value="X" class="btn btn-danger btn-sm"/>
+                            </form>
+                        </td>
+                    }
+                    <td>@employee.Id</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.Patronymic</td>
+                    <td>@employee.Age</td>
+                    <td>
+                        <a asp-controller="Employees" asp-action="Details" asp-route-Id="@employee.Id">
+                            @employee.ShortName
+                        </a>
+                    </td>
+                    @if (User.IsInRole(Role.Adinistrators))
+                    {
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@employee.Id">
+                                <span class="fa fa-edit"></span>
+                            </a>|
+                            <a asp-action="Delete" asp-route-id="@employee.Id" class="text-danger">
+                                <span class="fa fa-times"></span>
+                            </a>
+                        </td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Сотрудников нет!</p>
+    }
+
+    <hr/>
+
+    <p>
+        <a asp-controller="Home" asp-action="Index">На главную</a>
+    </p>
+</div>

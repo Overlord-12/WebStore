@@ -22,14 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\IoCFactory\IoCFactory.csproj" />
-    <ProjectReference Include="..\WebStore.DAL.Sqlite\WebStore.DAL.Sqlite.csproj" />
-    <ProjectReference Include="..\WebStore.DAL\WebStore.DAL.csproj" />
-    <ProjectReference Include="..\WebStore.Domain\WebStore.Domain.csproj" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\..\Common\WebStore.Domain\WebStore.Domain.csproj" />
+    <ProjectReference Include="..\..\Data\WebStore.DAL.Sqlite\WebStore.DAL.Sqlite.csproj" />
+    <ProjectReference Include="..\..\Services\Interface\WebStore.Interface\WebStore.Interface.csproj" />
+    <ProjectReference Include="..\..\Services\IoCFactory\IoCFactory.csproj" />
+    <ProjectReference Include="..\..\Services\WebStore.Realization\WebStore.Realization.csproj" />
   </ItemGroup>
 
 </Project>

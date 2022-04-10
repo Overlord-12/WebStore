@@ -8,10 +8,8 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
-using WebStore.Services;
-using WebStore.Services.InMemory;
+using WebStore.Interface.Interfaces;
 using WebStore.Services.InSQL;
-using WebStore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

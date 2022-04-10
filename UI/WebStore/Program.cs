@@ -3,6 +3,7 @@ using IoCFactory;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WebStore.Api.Client;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
@@ -85,6 +86,7 @@ services.AddAuthorization(opt =>
 //services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
 services.AddService();
+services.AddHttpClient<ITestClientService, TestClient>(client=>client.BaseAddress = new (configuration["WebApi"]));
 
 var app = builder.Build();
 
@@ -98,6 +100,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+
 
 app.UseStaticFiles();
 

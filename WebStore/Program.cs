@@ -1,4 +1,5 @@
 using System.Reflection;
+using IoCFactory;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,14 +84,9 @@ services.AddAuthorization(opt =>
     //opt.AddPolicy("AdminAuthorizationPolicy", policy => policy.RequireRole(Role.Adinistrators));
 });
 
-services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
-//services.AddScoped<IProductData, InMemoryProductData>();
-services.AddScoped<IProductData, SqlProductData>();
-services.AddScoped<ICartService, InCookiesCartService>();
-services.AddScoped<IOrderService, SqlOrderService>();
-
 //services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
+services.AddService();
 
 var app = builder.Build();
 

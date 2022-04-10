@@ -2,12 +2,12 @@
 
 namespace WebStore.WebApi.Controllers
 {
-    [Route("aspi/[controller]")]
+    [Route("api/Test")]
     [ApiController]
     public class TestController : Controller
     {
-        [HttpGet("getString")]
-        public IActionResult GetString(int id)
+        [HttpGet("getString/{id}")]
+        public IActionResult GetString(string id)
         {
             return Ok($"Hello {id}");
         }

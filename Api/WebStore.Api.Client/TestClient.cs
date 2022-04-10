@@ -5,13 +5,13 @@ namespace WebStore.Api.Client
 {
     public class TestClient : BaseClient, ITestClientService
     {
-        public TestClient(HttpClient client, string adress):base(client,adress)
+        public TestClient(HttpClient client):base(client, "api/Test")
         {
 
         }
         public string GetString(string value)
         {
-            var response = HttpClient.GetAsync($"{_Adress}/getString").Result;
+            var response = HttpClient.GetAsync($"{_Adress}/getString/{value}").Result;
             if (response.IsSuccessStatusCode)
                 return value;
             return "";

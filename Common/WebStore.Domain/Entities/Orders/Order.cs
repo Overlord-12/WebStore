@@ -24,4 +24,5 @@ public class Order : Entity
 
     [NotMapped]
     public decimal TotalPrice => Items.Sum(item => item.TotalItemPrice);
+W
 }

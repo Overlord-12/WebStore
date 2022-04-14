@@ -9,5 +9,5 @@ public interface IOrderService
 
     Task<Order?> GetOrderByIdAsync(int Id, CancellationToken Cancel = default);
 
-    Task<Order> CreateOrderAsync(string UserName, CartViewModel Cart, OrderViewModel OrderModel, CancellationToken Cancel = default);
+    Task<Order?> CreateOrderAsync(string UserName, CartViewModel Cart, OrderViewModel OrderModel, CancellationToken Cancel = default);
 }

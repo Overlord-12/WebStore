@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.APIAdresses;
 using WebStore.Interface.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.WebApi.Controllers
 {
-    [Route("api/Order")]
+    [Route(WebAPIAdresses.V1.Orders)]
     public class OrderController : Controller
     {
         public IOrderService _orderService;

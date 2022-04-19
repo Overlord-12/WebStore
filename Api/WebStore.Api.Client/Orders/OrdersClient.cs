@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebStore.Api.Client.Base;
+using WebStore.Domain.APIAdresses;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Orders;
 using WebStore.Interface.Interfaces;
@@ -18,7 +19,7 @@ namespace WebStore.Api.Client.Orders
         private readonly ILogger<OrdersClient> _Logger;
 
         public OrdersClient(HttpClient Client, ILogger<OrdersClient> Logger)
-            : base(Client, "api/Order")
+            : base(Client, WebAPIAdresses.V1.Orders)
         {
             _Logger = Logger;
         }
@@ -32,14 +33,14 @@ namespace WebStore.Api.Client.Orders
 
         public async Task<Order?> GetOrderByIdAsync(int Id, CancellationToken Cancel = default)
         {
-            var order = await GetAsync<Order>($"{_Adress}/getOrderById/{Id}");
+            var order = await GetAsync<Order>($"{_Address}/getOrderById/{Id}");
 
             return order;
         }
 
         public async Task<IEnumerable<Order>> GetUserOrdersAsync(string UserName, CancellationToken Cancel = default)
         {
-            var orders = await GetAsync<IEnumerable<OrderDTO>>($"{_Adress}/getUserOrders/{UserName}").ConfigureAwait(false);
+            var orders = await GetAsync<IEnumerable<OrderDTO>>($"{_Address}/getUserOrders/{UserName}").ConfigureAwait(false);
 
             return orders!.FromDTO()!;
         }

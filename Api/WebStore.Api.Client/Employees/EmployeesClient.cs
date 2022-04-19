@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WebStore.Api.Client.Base;
+using WebStore.Domain.APIAdresses;
 using WebStore.Domain.Entities;
 using WebStore.Interface.Interfaces;
 
@@ -16,7 +17,7 @@ namespace WebStore.Api.Client.Employees
         private readonly ILogger<EmployeesClient> _Logger;
 
         public EmployeesClient(HttpClient Client, ILogger<EmployeesClient> Logger)
-            : base(Client, "api/employees")
+            : base(Client, WebAPIAdresses.V1.Employees)
         {
             _Logger = Logger;
         }
@@ -29,13 +30,13 @@ namespace WebStore.Api.Client.Employees
 
         public Employee? GetById(int id)
         {
-            var employee = Get<Employee>($"{_Adress}/getDetailsAboutEmployee/{id}");
+            var employee = Get<Employee>($"{_Address}/getDetailsAboutEmployee/{id}");
             return employee;
         }
 
         public int Add(Employee employee)
         {
-            var response = Post(_Adress, employee);
+            var response = Post(_Address, employee);
             var added_employee = response.Content.ReadFromJsonAsync<Employee>().Result;
             if (added_employee is null)
                 return -1;
@@ -59,7 +60,7 @@ namespace WebStore.Api.Client.Employees
 
         public bool Delete(int Id)
         {
-            var response = Delete($"{_Adress}/deleteEmployeeById/{Id}");
+            var response = Delete($"{_Address}/deleteEmployeeById/{Id}");
             var success = response.IsSuccessStatusCode;
             return success;
         }

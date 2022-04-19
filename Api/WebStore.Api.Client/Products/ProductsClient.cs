@@ -10,35 +10,36 @@ using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Interface.Interfaces;
 using WebStore.WebStore.Api.Client.DTO;
+using WebStore.Domain.APIAdresses;
 
 namespace WebStore.Api.Client.Products
 {
     public class ProductsClient : BaseClient, IProductData
     {
-        public ProductsClient(HttpClient client) : base(client, "api/Product")
+        public ProductsClient(HttpClient client) : base(client, WebAPIAdresses.V1.Products)
         {
         }
         public IEnumerable<Section> GetSections()
         {
-            var sections = Get<IEnumerable<SectionDTO>>($"{_Adress}/getSection");
+            var sections = Get<IEnumerable<SectionDTO>>($"{_Address}/getSection");
             return sections.FromDTO();
         }
 
         public Section? GetSectionById(int Id)
         {
             //var section = Get<Section>($"{Address}/sections/{Id}");
-            var section = Get<SectionDTO>($"{_Adress}/getSectionById/{Id}");
+            var section = Get<SectionDTO>($"{_Address}/getSectionById/{Id}");
             return section.FromDTO();
         }
         public IEnumerable<Brand> GetBrands()
         {
-            var brands = Get<IEnumerable<BrandDTO>>($"{_Adress}/getBrands");
+            var brands = Get<IEnumerable<BrandDTO>>($"{_Address}/getBrands");
             return brands.FromDTO();
         }
 
         public Brand? GetBrandById(int Id)
         {
-            var brands = Get<BrandDTO>($"{_Adress}/getBrandById/{Id}");
+            var brands = Get<BrandDTO>($"{_Address}/getBrandById/{Id}");
             return brands.FromDTO();
         }
 
@@ -51,7 +52,7 @@ namespace WebStore.Api.Client.Products
 
         public Product? GetProductById(int Id)
         {
-            var product = Get<ProductDTO>($"{_Adress}/getAdditionalInfromationById/{Id}");
+            var product = Get<ProductDTO>($"{_Address}/getAdditionalInfromationById/{Id}");
             return product.FromDTO();
         }
     }

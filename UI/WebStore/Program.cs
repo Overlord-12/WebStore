@@ -3,7 +3,10 @@ using IoCFactory;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using Polly.Extensions.Http;
 using WebStore.Api.Client;
+using WebStore.Api.Client.Identity;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
@@ -86,15 +89,35 @@ services.AddAuthorization(opt =>
 //services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
 services.AddService();
-services.AddHttpClient<ITestClientService, TestClient>(client=>client.BaseAddress = new (configuration["WebApi"]));
+services.AddHttpClient("WebStoreAPIIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
+   .AddTypedClient<IUserStore<User>, UsersClient>()
+   .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+   .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
+   .AddTypedClient<IUserEmailStore<User>, UsersClient>()
+   .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
+   .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
+   .AddTypedClient<IUserClaimStore<User>, UsersClient>()
+   .AddTypedClient<IUserLoginStore<User>, UsersClient>()
+   .AddTypedClient<IRoleStore<Role>, RolesClient>()
+   .SetHandlerLifetime(TimeSpan.FromMinutes(15));
+
+static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(int MaxRetryCount = 5, int MaxJitterTime = 1000)
+{
+    var jitter = new Random();
+    return HttpPolicyExtensions
+       .HandleTransientHttpError()
+       .WaitAndRetryAsync(
+            MaxRetryCount, RetryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, RetryAttempt)) +
+                TimeSpan.FromMilliseconds(jitter.Next(0, MaxJitterTime)));
+}
+
+static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy() =>
+    HttpPolicyExtensions
+       .HandleTransientHttpError()
+       .CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30));
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await db_initializer.InitializeAsync(RemoveBefore: false);
-}
 
 if (app.Environment.IsDevelopment())
 {
@@ -107,31 +130,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
-
-app.MapGet("/throw", () =>
-{
-    throw new ApplicationException("Пример ошибки в приложении");
-});
-
-app.MapGet("/greetings", () => app.Configuration["ServerGreetings"]);
-
-app.UseMiddleware<TestMiddleware>();
-
-//app.MapControllerRoute(
-//    name: "ActionRoute",
-//    pattern: "{controller}.{action}({a}, {b})");
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.UseEndpoints(endpoints =>
 {
-    //endpoints.MapControllerRoute(
-    //    name: "ActionRoute",
-    //    pattern: "{controller}.{action}({a}, {b})"
-    //);
 
     endpoints.MapControllerRoute(
         name: "areas",

@@ -12,13 +12,13 @@ public class EmployeesViewModel : IValidatableObject
     [Required(ErrorMessage = "Фамилия является обязательной")]
     [StringLength(255, MinimumLength = 2, ErrorMessage = "Длина фамилии должна быть от 2 до 255 символов")]
     [RegularExpression(@"([А-ЯЁ][а-яё]+)|([A-Z][a-z]+)", ErrorMessage = "Ошибка формата строки")]
-    public string LastName { get; set; }
+    public string LastName { get; set; } = null!;
 
     [Display(Name = "Имя")]
     [Required(ErrorMessage = "Имя является обязательным")]
     [StringLength(255, MinimumLength = 2, ErrorMessage = "Длина имени должна быть от 2 до 255 символов")]
     [RegularExpression(@"([А-ЯЁ][а-яё]+)|([A-Z][a-z]+)", ErrorMessage = "Ошибка формата строки")]
-    public string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 
     [Display(Name = "Отчество")]
     [StringLength(255, ErrorMessage = "Длина отчества должна быть до 255 символов")]

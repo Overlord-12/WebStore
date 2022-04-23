@@ -14,6 +14,7 @@ using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interface.Interfaces;
 using WebStore.Services.InSQL;
+using Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +42,6 @@ switch (db_connection_string_name)
         break;
 }
 
-services.AddTransient<IDbInitializer, DbInitializer>();
 
 services.AddIdentity<User, Role>(/*opt => opt.*/)
    .AddEntityFrameworkStores<WebStoreDB>()
@@ -90,8 +90,8 @@ services.AddAuthorization(opt =>
 services.AddAutoMapper(typeof(Program));
 services.AddService();
 services.AddHttpClient("WebStoreAPIIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
-   .AddTypedClient<IUserStore<User>, UsersClient>()
    .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+   .AddTypedClient<IUserStore<User>, UsersClient>()
    .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
    .AddTypedClient<IUserEmailStore<User>, UsersClient>()
    .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
@@ -130,6 +130,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+
+builder.Logging.AddLog4Net();
 
 app.UseAuthorization();
 

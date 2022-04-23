@@ -11,7 +11,7 @@ namespace WebStore.Api.Client
         }
         public string GetString(string value)
         {
-            var response = HttpClient.GetAsync($"{_Adress}/getString/{value}").Result;
+            var response = HttpClient.GetAsync($"{_Address}/getString/{value}").Result;
             if (response.IsSuccessStatusCode)
                 return value;
             return "";
@@ -20,7 +20,7 @@ namespace WebStore.Api.Client
 
         public string PostString(string value)
         {
-            var response = HttpClient.GetAsync(_Adress).Result;
+            var response = HttpClient.GetAsync(_Address).Result;
             if (response.IsSuccessStatusCode)
                 return value;
             return "";
